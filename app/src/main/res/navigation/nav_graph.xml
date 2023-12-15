@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.naocompreadote.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_newUser"
+            app:destination="@id/newUser" />
+        <action
+            android:id="@+id/action_homeFragment_to_telaPrincipalUsuario"
+            app:destination="@id/telaPrincipalUsuario" />
+    </fragment>
+    <fragment
+        android:id="@+id/newUser"
+        android:name="com.example.naocompreadote.NewUser"
+        android:label="fragment_new_user"
+        tools:layout="@layout/fragment_new_user" >
+        <action
+            android:id="@+id/action_newUser_to_cadastrarAdotante"
+            app:destination="@id/cadastrarAdotante" />
+        <action
+            android:id="@+id/action_newUser_to_cadastrarDoador"
+            app:destination="@id/cadastrarDoador" />
+    </fragment>
+    <fragment
+        android:id="@+id/cadastrarAdotante"
+        android:name="com.example.naocompreadote.CadastrarAdotante"
+        android:label="fragment_cadastrar_adotante"
+        tools:layout="@layout/fragment_cadastrar_adotante" />
+    <fragment
+        android:id="@+id/cadastrarDoador"
+        android:name="com.example.naocompreadote.CadastrarDoador"
+        android:label="fragment_cadastrar_doador"
+        tools:layout="@layout/fragment_cadastrar_doador" />
+    <fragment
+        android:id="@+id/telaPrincipalUsuario"
+        android:name="com.example.naocompreadote.TelaPrincipalUsuario"
+        android:label="TelaPrincipalUsuario" >
+        <action
+            android:id="@+id/action_telaPrincipalUsuario_to_detalhesPet"
+            app:destination="@id/detalhesPet" />
+        <action
+            android:id="@+id/action_telaPrincipalUsuario_to_adocoes"
+            app:destination="@id/adocoes" />
+        <action
+            android:id="@+id/action_telaPrincipalUsuario_to_listaDePets"
+            app:destination="@id/listaDePets" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalhesPet"
+        android:name="com.example.naocompreadote.DetalhesPet"
+        android:label="DetalhesPet" />
+    <fragment
+        android:id="@+id/adocoes"
+        android:name="com.example.naocompreadote.Adocoes"
+        android:label="Adocoes" />
+    <fragment
+        android:id="@+id/listaDeAdotantes"
+        android:name="com.example.naocompreadote.ListaDeAdotantes"
+        android:label="ListaDeAdotantes" />
+    <fragment
+        android:id="@+id/listaDePets"
+        android:name="com.example.naocompreadote.ListaDePets"
+        android:label="ListaDePets" >
+        <action
+            android:id="@+id/action_listaDePets_to_listaDeAdotantes"
+            app:destination="@id/listaDeAdotantes" />
+    </fragment>
+</navigation>
