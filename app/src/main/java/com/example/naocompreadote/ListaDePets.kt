@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,6 @@ import kotlinx.coroutines.launch
 
 class ListaDePets : Fragment() {
     private lateinit var mainViewModel: MainViewModel
-    var login:Doador = Doador()
     private var _binding: FragmentListaDePetsBinding? = null
     private val binding get() = _binding!!
 
@@ -41,8 +41,16 @@ class ListaDePets : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory()).get(MainViewModel::class.java)
         mainViewModel.doador.observe(viewLifecycleOwner, Observer {
             it.pets
-            binding.listaPets.adapter = PetsRecyclerAdapter(it.pets!!)
-
+            binding.listaPets.adapter = it.pets?.let { it1 -> PetsRecyclerAdapter(it1){
+                lifecycleScope.launch(Dispatchers.Default) {
+                    mainViewModel.getPetById(it.petId!!)
+                    if (!it.adocoes!!.isEmpty())
+                        mainViewModel.getAdotanteByPetId(it.petId!!)
+                    else
+                        mainViewModel.clearAdotante()
+                }
+                findNavController().navigate(R.id.listaDeAdotantes)
+            } }
         })
         return binding.root
     }
@@ -50,11 +58,9 @@ class ListaDePets : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.floatingActionButton.setOnClickListener{
+            findNavController().navigate(R.id.cadastrarPetFragment)
+        }
+    }
 
-    }
-    private fun adaptarListView(listaDePets: List<Pet>) {
-        binding.listaPets.adapter =
-            PetsRecyclerAdapter(listaDePets)
-        binding.listaPets.layoutManager = LinearLayoutManager(requireContext())
-    }
 }

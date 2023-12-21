@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.naocompreadote.api.ApiClient
 import com.example.naocompreadote.api.model.Adotante
@@ -69,7 +70,7 @@ class CadastrarAdotante : Fragment() {
                     telefone = binding.editTextCadastrarTelefoneAdotante.text.toString(),
                     cpf = binding.editTextCadastrarCpfAdotante.text.toString(),
                     email = binding.editTextCadastrarEmailAdotante.text.toString())
-                GlobalScope.launch(Dispatchers.Default) {
+                lifecycleScope.launch(Dispatchers.Default) {
                     var login = ApiClient.getProjectService().criarAdotante(adotante)
                 }
                 findNavController().navigate(R.id.homeFragment)

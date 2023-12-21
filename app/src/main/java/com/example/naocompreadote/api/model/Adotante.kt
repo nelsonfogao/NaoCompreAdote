@@ -7,5 +7,7 @@ class Adotante (
     var senha: String? = null,
     var telefone: String? = null,
     var endereco: String? = null,
-    var cpf:String? = null
+    var cpf:String? = null,
+    var fotoUrl:String? = null,
+    var adocoes: List<Adocoes>? = null
 )

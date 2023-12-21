@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.naocompreadote.api.ApiClient
 import com.example.naocompreadote.api.model.Credenciais
@@ -69,7 +70,7 @@ class CadastrarDoador : Fragment() {
                 endereco = binding.editTextEnderecoDoador.text.toString(),
                 telefone = binding.editTextCadastrarTelefoneDoador.text.toString(),
                 email = binding.editTextCadastrarEmailDoador.text.toString())
-                GlobalScope.launch(Dispatchers.Default) {
+                lifecycleScope.launch(Dispatchers.Default) {
                     var login = ApiClient.getProjectService().criarDoador(doador)
                     Log.d("TAG", login.toString())
                 }

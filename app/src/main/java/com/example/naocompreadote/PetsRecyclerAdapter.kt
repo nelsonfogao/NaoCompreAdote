@@ -9,15 +9,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.naocompreadote.api.model.Pet
 import com.example.naocompreadote.databinding.FragmentHomeBinding
+import com.squareup.picasso.Picasso
 
 
 class PetsRecyclerAdapter (
-    val petsList: List<Pet>
+    val petsList: List<Pet>,
+    val actionClick: (Pet)->Unit
 ): RecyclerView.Adapter<PetsRecyclerAdapter.PetsViewHolder>(){
 
 
     class PetsViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val textViewNome: TextView = itemView.findViewById(R.id.textViewNomeCard)
+        val imgViewPets: ImageView = itemView.findViewById(R.id.imageListaPets)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetsViewHolder {
@@ -34,6 +37,12 @@ class PetsRecyclerAdapter (
     override fun onBindViewHolder( holder: PetsViewHolder, position: Int) {
         val pets = petsList[position]
         holder.textViewNome.text = pets.nome
+        Picasso.get().load(pets.fotoUrl)
+            .into(holder.imgViewPets)
+
+        holder.itemView.setOnClickListener{
+            actionClick(pets)
+        }
 
 
     }

@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.naocompreadote.api.ApiClient
+import com.example.naocompreadote.api.model.Adotante
 import com.example.naocompreadote.api.model.Credenciais
 import com.example.naocompreadote.api.model.Doador
 import com.example.naocompreadote.databinding.FragmentHomeBinding
@@ -26,7 +28,8 @@ class HomeFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    var login:Doador = Doador()
+    var login:Doador? = Doador()
+    var loginAdotante:Adotante? = Adotante()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,31 +58,19 @@ class HomeFragment : Fragment() {
                 var credenciais= Credenciais(
                 email = binding.editTextEmail.text.toString(),
                 senha = binding.editTextPassword.text.toString())
+
                 if ( binding.switchLogin.isChecked){
-                    GlobalScope.launch(Dispatchers.Default) {
-                        //login = ApiClient.getProjectService().loginAdotante(credenciais)
-
+                    lifecycleScope.launch(Dispatchers.Default){
+                        loginAdotante = mainViewModel.loginAdotante(credenciais)
+                        loginAdotante?.adotanteId?.let { it1 -> mainViewModel.getAdotanteById(it1) }
                     }
-                    findNavController().navigate(R.id.listaAdotantes)
+                    findNavController().navigate(R.id.telaPrincipalUsuario)
                 }else{
-                    GlobalScope.launch(Dispatchers.Default) {
-                        login = ApiClient.getProjectService().loginDoador(credenciais)
+                    lifecycleScope.launch(Dispatchers.Default){
+                        login = mainViewModel.loginDoador(credenciais)
+                        login?.doadorId?.let { it1 -> mainViewModel.getDoadorById(it1) }
                     }
-                    mainViewModel._doador.observe(viewLifecycleOwner, Observer {
-                        mainViewModel.updateDoador(login)
-
-                    })
-                    mainViewModel._doador.observe(viewLifecycleOwner, Observer { newData ->
-                        var id = newData.doadorId
-                        GlobalScope.launch(Dispatchers.Default) {
-                            login = ApiClient.getProjectService().getDoadorById(id!!)
-                        }
-                    })
-                    mainViewModel._doador.observe(viewLifecycleOwner, Observer {
-                        mainViewModel.updateDoador(login)
-                    })
-                    findNavController().navigate(R.id.listaDePets)
-
+                        findNavController().navigate(R.id.listaDePets)
                 }
 
             }

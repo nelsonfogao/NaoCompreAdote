@@ -1,17 +1,26 @@
 package com.example.naocompreadote
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.naocompreadote.api.ApiClient
 import com.example.naocompreadote.api.model.Credenciais
+import com.example.naocompreadote.api.model.Doador
+import com.example.naocompreadote.api.model.Pet
 import com.example.naocompreadote.databinding.FragmentHomeBinding
 import com.example.naocompreadote.databinding.FragmentListaDeAdotantesBinding
+import com.example.naocompreadote.databinding.FragmentListaDePetsBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -19,7 +28,6 @@ import kotlinx.coroutines.launch
 
 class ListaDeAdotantes : Fragment() {
     private lateinit var mainViewModel: MainViewModel
-
     private var _binding: FragmentListaDeAdotantesBinding? = null
     private val binding get() = _binding!!
 
@@ -31,12 +39,14 @@ class ListaDeAdotantes : Fragment() {
         _binding = FragmentListaDeAdotantesBinding.inflate(inflater, container, false)
 
         mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory()).get(MainViewModel::class.java)
+        mainViewModel.adotante.observe(viewLifecycleOwner, Observer {
+            binding.listaAdotantes.adapter = it?.let { it1 -> AdotantesRecyclerAdapter(it1) }
+        })
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
     }
+
 }
