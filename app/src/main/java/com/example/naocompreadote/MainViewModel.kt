@@ -9,6 +9,7 @@ import com.example.naocompreadote.api.ApiClient
 import com.example.naocompreadote.api.model.Adotante
 import com.example.naocompreadote.api.model.Credenciais
 import com.example.naocompreadote.api.model.Doador
+import com.example.naocompreadote.api.model.Adocoes
 import com.example.naocompreadote.api.model.Pet
 import kotlinx.coroutines.launch
 
@@ -73,12 +74,12 @@ class MainViewModel : ViewModel(){
     }
     fun criarDoador(createDoador: Doador){
         viewModelScope.launch {
-            var login = ApiClient.getProjectService().criarDoador(createDoador)
+            ApiClient.getProjectService().criarDoador(createDoador)
         }
     }
     fun criarAdotante(createAdotante: Adotante){
         viewModelScope.launch {
-            var login = ApiClient.getProjectService().criarAdotante(createAdotante)
+            ApiClient.getProjectService().criarAdotante(createAdotante)
         }
     }
     fun loginAdotante(credenciais: Credenciais): Adotante? {
@@ -131,5 +132,18 @@ class MainViewModel : ViewModel(){
             updatePetPrincipal(getPet)
         }
         return _petPrincipal.value
+    }
+    fun postAdocaoAtual() {
+        var adocao2 = createAdocao()
+        viewModelScope.launch {
+            ApiClient.getProjectService().criarAdocao(adocao2)
+            getPetPrincipal(adocao2.adotanteId!!)
+        }
+    }
+    fun createAdocao(): Adocoes{
+        var adocoes = Adocoes()
+        adocoes.adotanteId = adotanteLogado.value?.adotanteId
+        adocoes.petId = petPrincipal.value?.petId
+        return adocoes
     }
 }

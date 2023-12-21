@@ -1,5 +1,6 @@
 package com.example.naocompreadote.api.service
 
+import com.example.naocompreadote.api.model.Adocoes
 import com.example.naocompreadote.api.model.Adotante
 import com.example.naocompreadote.api.model.Credenciais
 import com.example.naocompreadote.api.model.Doador
@@ -36,6 +37,9 @@ interface ProjectService {
 
     @GET("api/adotantes/{id}")
     suspend fun getAdotanteById(@Path("id")id:String): Adotante
+
+    @POST("api/adotantes/adocao")
+    suspend fun criarAdocao(@Body adocoes: Adocoes):Adocoes
 
     @POST("api/adotantes")
     suspend fun criarAdotante(@Body adotante: Adotante): Adotante

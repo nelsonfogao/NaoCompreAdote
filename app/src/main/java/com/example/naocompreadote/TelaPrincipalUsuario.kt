@@ -1,6 +1,7 @@
 package com.example.naocompreadote
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +44,11 @@ class TelaPrincipalUsuario : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.imageViewLike.setOnClickListener{
+            mainViewModel.postAdocaoAtual()
+            binding.imageViewLike.handler.postDelayed({
+                binding.imageViewLike.isEnabled = true
+            }, 1000)
+        }
     }
-
 }

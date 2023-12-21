@@ -151,6 +151,7 @@
         android:backgroundTint="#FFFFFF"
         android:text="Criar"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
