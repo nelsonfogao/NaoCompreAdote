@@ -60,16 +60,12 @@ class HomeFragment : Fragment() {
                 senha = binding.editTextPassword.text.toString())
 
                 if ( binding.switchLogin.isChecked){
-                    lifecycleScope.launch(Dispatchers.Default){
                         loginAdotante = mainViewModel.loginAdotante(credenciais)
                         loginAdotante?.adotanteId?.let { it1 -> mainViewModel.getAdotanteById(it1) }
-                    }
                     findNavController().navigate(R.id.telaPrincipalUsuario)
                 }else{
-                    lifecycleScope.launch(Dispatchers.Default){
                         login = mainViewModel.loginDoador(credenciais)
                         login?.doadorId?.let { it1 -> mainViewModel.getDoadorById(it1) }
-                    }
                         findNavController().navigate(R.id.listaDePets)
                 }
 

@@ -70,10 +70,7 @@ class CadastrarDoador : Fragment() {
                 endereco = binding.editTextEnderecoDoador.text.toString(),
                 telefone = binding.editTextCadastrarTelefoneDoador.text.toString(),
                 email = binding.editTextCadastrarEmailDoador.text.toString())
-                lifecycleScope.launch(Dispatchers.Default) {
-                    var login = ApiClient.getProjectService().criarDoador(doador)
-                    Log.d("TAG", login.toString())
-                }
+                    mainViewModel.criarDoador(doador)
                 findNavController().navigate(R.id.homeFragment)
             }
         }

@@ -8,21 +8,18 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.example.naocompreadote.api.model.Adotante
-import com.example.naocompreadote.api.model.Doador
-import com.example.naocompreadote.api.model.Pet
-import com.example.naocompreadote.databinding.FragmentListaDePetsBinding
 import com.example.naocompreadote.databinding.FragmentTelaPrincipalUsuarioBinding
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TelaPrincipalUsuario : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private var _binding: FragmentTelaPrincipalUsuarioBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +30,12 @@ class TelaPrincipalUsuario : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity(), ViewModelFactory()).get(MainViewModel::class.java)
 
         mainViewModel.adotanteLogado.observe(viewLifecycleOwner, Observer {
-            lifecycleScope.launch(Dispatchers.Default){
-                mainViewModel.getPetPrincipal(it.adotanteId!!)
-            }
+            it.adotanteId?.let { it1 -> mainViewModel.getPetPrincipal(it1) }
         })
-        mainViewModel.petPrincipal.observe(viewLifecycleOwner) {
-            Picasso.get().load(it.fotoUrl)
-                .into(binding.imagePetUser)
+        mainViewModel.petPrincipal.observe(viewLifecycleOwner, Observer {
+            Picasso.get().load(it.fotoUrl).into(binding.imagePetUser)
             binding.nomeDoPet.text = it.nome
-        }
+        })
 
 
         return binding.root

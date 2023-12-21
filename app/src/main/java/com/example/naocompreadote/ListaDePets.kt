@@ -42,13 +42,11 @@ class ListaDePets : Fragment() {
         mainViewModel.doador.observe(viewLifecycleOwner, Observer {
             it.pets
             binding.listaPets.adapter = it.pets?.let { it1 -> PetsRecyclerAdapter(it1){
-                lifecycleScope.launch(Dispatchers.Default) {
                     mainViewModel.getPetById(it.petId!!)
                     if (!it.adocoes!!.isEmpty())
                         mainViewModel.getAdotanteByPetId(it.petId!!)
                     else
                         mainViewModel.clearAdotante()
-                }
                 findNavController().navigate(R.id.listaDeAdotantes)
             } }
         })

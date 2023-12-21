@@ -70,9 +70,7 @@ class CadastrarAdotante : Fragment() {
                     telefone = binding.editTextCadastrarTelefoneAdotante.text.toString(),
                     cpf = binding.editTextCadastrarCpfAdotante.text.toString(),
                     email = binding.editTextCadastrarEmailAdotante.text.toString())
-                lifecycleScope.launch(Dispatchers.Default) {
-                    var login = ApiClient.getProjectService().criarAdotante(adotante)
-                }
+                mainViewModel.criarAdotante(adotante)
                 findNavController().navigate(R.id.homeFragment)
             }
         }

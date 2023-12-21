@@ -23,7 +23,7 @@ interface ProjectService {
     suspend fun criarDoador(@Body doador: Doador): Doador
 
 
-    @GET("api/pets/adotantesPet/{id}")
+    @GET("api/pets/adotantespet/{id}")
     suspend fun getPetsNonFavorite(@Path("id")id:String): Pet
 
     @GET("api/pets/{id}")
@@ -43,7 +43,7 @@ interface ProjectService {
     @POST("api/adotantes/login")
     suspend fun loginAdotante(@Body credenciais: Credenciais): Adotante?
 
-    @GET("api/adotantes/adotantesPet/{id}")
+    @GET("api/adotantes/adotantespet/{id}")
     suspend fun getAdotantesByPetIdAsync(@Path("id")id:String): List<Adotante>
 
 }

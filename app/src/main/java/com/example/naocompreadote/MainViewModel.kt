@@ -1,13 +1,16 @@
 package com.example.naocompreadote
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.naocompreadote.api.ApiClient
 import com.example.naocompreadote.api.model.Adotante
 import com.example.naocompreadote.api.model.Credenciais
 import com.example.naocompreadote.api.model.Doador
 import com.example.naocompreadote.api.model.Pet
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel(){
     private var _doador: MutableLiveData<Doador> = MutableLiveData()
@@ -59,48 +62,74 @@ class MainViewModel : ViewModel(){
         _petPrincipal.postValue(newData)
     }
 
-    suspend fun loginDoador(credenciais: Credenciais): Doador? {
-        var login = ApiClient.getProjectService().loginDoador(credenciais)
-        if (login != null) {
+    fun loginDoador(credenciais: Credenciais): Doador? {
+        viewModelScope.launch {
+            var login = ApiClient.getProjectService().loginDoador(credenciais)
+            if (login != null) {
+                updateDoador(login)
+            }
+        }
+        return _doador.value
+    }
+    fun criarDoador(createDoador: Doador){
+        viewModelScope.launch {
+            var login = ApiClient.getProjectService().criarDoador(createDoador)
+        }
+    }
+    fun criarAdotante(createAdotante: Adotante){
+        viewModelScope.launch {
+            var login = ApiClient.getProjectService().criarAdotante(createAdotante)
+        }
+    }
+    fun loginAdotante(credenciais: Credenciais): Adotante? {
+        viewModelScope.launch{
+            var loginAdotante = ApiClient.getProjectService().loginAdotante(credenciais)
+            if (loginAdotante != null) {
+                updateAdotanteLogado(loginAdotante)
+            }
+        }
+        return _adotanteLogado.value
+    }
+    fun getDoadorById(doadorId : String): Doador? {
+        viewModelScope.launch{
+            var login = ApiClient.getProjectService().getDoadorById(doadorId)
             updateDoador(login)
         }
         return _doador.value
     }
-    suspend fun loginAdotante(credenciais: Credenciais): Adotante? {
-        var loginAdotante = ApiClient.getProjectService().loginAdotante(credenciais)
-        if (loginAdotante != null) {
-            updateAdotanteLogado(loginAdotante)
+    fun getAdotanteById(adotanteId : String): Adotante? {
+        viewModelScope.launch {
+            var login = ApiClient.getProjectService().getAdotanteById(adotanteId)
+            updateAdotanteLogado(login)
         }
         return _adotanteLogado.value
     }
-    suspend fun getDoadorById(doadorId : String): Doador? {
-        var login = ApiClient.getProjectService().getDoadorById(doadorId)
-        updateDoador(login)
-        return _doador.value
-    }
-    suspend fun getAdotanteById(adotanteId : String): Adotante? {
-        var login = ApiClient.getProjectService().getAdotanteById(adotanteId)
-        updateAdotanteLogado(login)
-        return _adotanteLogado.value
-    }
-    suspend fun getPetById(petId : String): Pet? {
-        var login = ApiClient.getProjectService().getPetById(petId)
-        updatePet(login)
+    fun getPetById(petId : String): Pet? {
+        viewModelScope.launch {
+            var login = ApiClient.getProjectService().getPetById(petId)
+            updatePet(login)
+        }
         return _pet.value
     }
-    suspend fun getAdotanteByPetId(petId : String): List<Adotante>? {
-        var login = ApiClient.getProjectService().getAdotantesByPetIdAsync(petId)
-        updateAdotantes(login)
+    fun getAdotanteByPetId(petId : String): List<Adotante>? {
+        viewModelScope.launch {
+            var login = ApiClient.getProjectService().getAdotantesByPetIdAsync(petId)
+            updateAdotantes(login)
+        }
         return _adotantes.value
     }
-    suspend fun postCadastarPet(pet : Pet, id:String): Pet {
-        var pet2 = ApiClient.getProjectService().createPet(pet, id)
-        updateCadastrarPet(pet2)
-        return _cadastrarPet.value!!
+    fun postCadastarPet(cadastrarPet : Pet, id:String): Pet? {
+        viewModelScope.launch {
+            var pet2 = ApiClient.getProjectService().createPet(cadastrarPet, id)
+            updateCadastrarPet(pet2)
+        }
+        return _cadastrarPet.value
     }
-    suspend fun getPetPrincipal(adotanteId : String): Pet {
-        var pet = ApiClient.getProjectService().getPetsNonFavorite(adotanteId)
-        updatePetPrincipal(pet)
-        return _petPrincipal.value!!
+    fun getPetPrincipal(adotanteId : String): Pet? {
+        viewModelScope.launch {
+            var getPet = ApiClient.getProjectService().getPetsNonFavorite(adotanteId)
+            updatePetPrincipal(getPet)
+        }
+        return _petPrincipal.value
     }
 }
