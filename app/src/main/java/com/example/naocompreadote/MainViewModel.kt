@@ -1,5 +1,7 @@
 package com.example.naocompreadote
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +12,10 @@ import com.example.naocompreadote.api.model.Credenciais
 import com.example.naocompreadote.api.model.Doador
 import com.example.naocompreadote.api.model.Adocoes
 import com.example.naocompreadote.api.model.Pet
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class MainViewModel : ViewModel(){
     private var _doador: MutableLiveData<Doador> = MutableLiveData()
@@ -20,7 +25,6 @@ class MainViewModel : ViewModel(){
     private var _adotanteLogado : MutableLiveData<Adotante> = MutableLiveData()
     val adotanteLogado: LiveData<Adotante>
         get() = _adotanteLogado
-
 
     private var _pet: MutableLiveData<Pet> = MutableLiveData()
     val pet: LiveData<Pet>
@@ -38,7 +42,11 @@ class MainViewModel : ViewModel(){
     val petPrincipal: LiveData<Pet>
         get() = _petPrincipal
 
+    private val _imagemPet = MutableLiveData<String>()
+    val imagemPet: LiveData<String> = _imagemPet
 
+    private val _imagemAdotante = MutableLiveData<String>()
+    val imagemAdotante: LiveData<String> = _imagemAdotante
 
     fun updateDoador(newData: Doador) {
         _doador.postValue(newData)
@@ -61,7 +69,12 @@ class MainViewModel : ViewModel(){
     fun updatePetPrincipal(newData: Pet) {
         _petPrincipal.postValue(newData)
     }
-
+    fun updateImagemPet(imagemPet: String) {
+        _imagemPet.value = imagemPet
+    }
+    fun updateImagemAdotante(imagemAdotante: String) {
+        _imagemAdotante.value = imagemAdotante
+    }
     fun loginDoador(credenciais: Credenciais): Doador? {
         viewModelScope.launch {
             var login = ApiClient.getProjectService().loginDoador(credenciais)
@@ -144,5 +157,37 @@ class MainViewModel : ViewModel(){
         adocoes.adotanteId = adotanteLogado.value?.adotanteId
         adocoes.petId = petPrincipal.value?.petId
         return adocoes
+    }
+
+
+    fun uploadImagePet(uri: Uri) {
+        val storage: FirebaseStorage = FirebaseStorage.getInstance()
+
+        val storageRef: StorageReference = storage.reference
+        val imagesRef: StorageReference = storageRef.child("${UUID.randomUUID()}")
+        val uploadTask = imagesRef.putFile(uri)
+        uploadTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                imagesRef.downloadUrl.addOnSuccessListener { uri ->
+                    val imageUrl = uri.toString()
+                    updateImagemPet(imageUrl)
+                }
+            }
+        }
+    }
+    fun uploadImageAdotante(uri: Uri) {
+        val storage: FirebaseStorage = FirebaseStorage.getInstance()
+
+        val storageRef: StorageReference = storage.reference
+        val imagesRef: StorageReference = storageRef.child("${UUID.randomUUID()}")
+        val uploadTask = imagesRef.putFile(uri)
+        uploadTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                imagesRef.downloadUrl.addOnSuccessListener { uri ->
+                    val imageUrl = uri.toString()
+                    updateImagemAdotante(imageUrl)
+                }
+            }
+        }
     }
 }

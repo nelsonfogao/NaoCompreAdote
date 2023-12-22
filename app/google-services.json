@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "490811371885",
+    "project_id": "naocompreadote",
+    "storage_bucket": "naocompreadote.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490811371885:android:d7fb4c26172579d7c3aa64",
+        "android_client_info": {
+          "package_name": "com.example.naocompreadote"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC9LDK87mqXv4uIWcrFhr6BbDtZJP3kq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
