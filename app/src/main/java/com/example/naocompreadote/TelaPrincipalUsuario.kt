@@ -15,6 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class TelaPrincipalUsuario : Fragment() {
     private lateinit var mainViewModel: MainViewModel
@@ -36,6 +40,7 @@ class TelaPrincipalUsuario : Fragment() {
         mainViewModel.petPrincipal.observe(viewLifecycleOwner, Observer {
             Picasso.get().load(it.fotoUrl).into(binding.imagePetUser)
             binding.nomeDoPet.text = it.nome
+            binding.idadeDoPet.text = calcularIdade(it.dataNascimento!!)
         })
 
 
@@ -49,6 +54,28 @@ class TelaPrincipalUsuario : Fragment() {
             binding.imageViewLike.handler.postDelayed({
                 binding.imageViewLike.isEnabled = true
             }, 1000)
+        }
+    }
+
+
+    fun calcularIdade(dataNascimento: String): String {
+        val formato = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+        val dataNasc = formato.parse(dataNascimento)
+        val hoje = Calendar.getInstance().time
+
+        val diferenca = hoje.time - dataNasc.time
+        val anos = diferenca / (365.25 * 24 * 60 * 60 * 1000).toLong()
+
+        val meses = ((diferenca % (365.25 * 24 * 60 * 60 * 1000)) / (30.44 * 24 * 60 * 60 * 1000)).toLong()
+
+        return if (anos > 0) {
+            if (meses >= 12) {
+                "$anos anos"
+            } else {
+                "$anos anos, $meses meses"
+            }
+        } else {
+            "$meses meses"
         }
     }
 }
