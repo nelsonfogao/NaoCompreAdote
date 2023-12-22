@@ -14,7 +14,6 @@ class Pet (
     var doadorId: String? = null,
     var disponivel: Boolean? = null,
     var fotoUrl: String? = null,
-    var caracteristicas: List<Caracteristicas>? = null,
     var adocoes: List<Adocoes>? = null
 
 )

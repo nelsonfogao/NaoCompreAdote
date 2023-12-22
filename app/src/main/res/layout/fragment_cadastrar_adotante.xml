@@ -8,6 +8,16 @@
     android:background="#47B2AC"
     tools:context=".CadastrarAdotante" >
 
+    <ImageView
+        android:id="@+id/CadastrarFotoAdotante"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:src="@android:drawable/ic_menu_gallery" />
+
     <EditText
         android:id="@+id/editTextCadastrarNomeAdotante"
         android:layout_width="254dp"
@@ -25,7 +35,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/CadastrarFotoAdotante"
         tools:visibility="visible" />
 
     <EditText

@@ -5,11 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.naocompreadote.api.model.Adotante
-import com.example.naocompreadote.api.model.Pet
-import com.example.naocompreadote.databinding.FragmentHomeBinding
 import com.squareup.picasso.Picasso
 
 
